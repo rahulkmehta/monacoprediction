@@ -8,11 +8,11 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import scale
 from collections import Counter
 
-raceFrame = pd.read_csv("raceData.csv")
+raceFrame = pd.read_csv("normalized_race_data.csv")
 print (raceFrame.head())
 
 print ("DROPPING NAMES")
-raceFrame = raceFrame.drop(['name'], 1)
+raceFrame = raceFrame.drop(['name', 'year'], 1)
 print (raceFrame.head())
 
 print ("SHOWING CORRELATIONS")
@@ -20,10 +20,10 @@ print (raceFrame.corr())
 
 raceFrame = raceFrame.reset_index()
 
-raceFrame_data = raceFrame.ix[:,(0,1,2,3,4)].values
-raceFrame_target = raceFrame.ix[:,5].values
+raceFrame_data = raceFrame.ix[:,(0,1,2,3,4,5)].values
+raceFrame_target = raceFrame.ix[:,6].values
 
-raceFrame_data_names = ['qualiposition','qone', 'qtwo', 'qthree', 'pointsbeforemonaco']
+raceFrame_data_names = ['qualiposition','qone','qtwo','qthree','normalized', 'pointsbeforemonaco']
 X,y = scale(raceFrame_data), raceFrame_target
 
 print ("CHECKING FOR MISSING VALUES")
