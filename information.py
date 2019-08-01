@@ -14,17 +14,17 @@ def convert_time(string):
     time = (60*Decimal(minutes)) + (Decimal(seconds)) + Decimal(milliseconds)/1000
     return float(time)
 
-def gather_data():
+def gather_data(year):
 
     csv_data = []
 
     try:
         # [GET JSON DATA]        
-        response = requests.get("http://ergast.com/api/f1/2008/6/qualifying.json")
+        response = requests.get("http://ergast.com/api/f1/"+str(year)+"/6/qualifying.json")
         json_data = json.loads(response.text)
-        response_standings = requests.get("http://ergast.com/api/f1/2008/5/driverStandings.json")
+        response_standings = requests.get("http://ergast.com/api/f1/"+str(year)+"/5/driverStandings.json")
         json_data1 = json.loads(response_standings.text)
-        response_results = requests.get("http://ergast.com/api/f1/2008/6/results.json")
+        response_results = requests.get("http://ergast.com/api/f1/"+str(year)+"/6/results.json")
         json_data2 = json.loads(response_results.text)
 
         # [CREATE ARRAY WITH DRIVER STANDINGS AT THAT POINT]
@@ -62,7 +62,8 @@ def gather_data():
                 for item in driver_results_temp:
                     if item[1] == entry['Driver']['driverId']:
                         appendcsvarray.append(int(item[0]))
-                #[FINAL ARRAY]
+                #[FINAL ARRAY]i
+                appendcsvarray.insert(1, year)
                 csv_data.append(appendcsvarray)
             else:
                 pass
@@ -70,12 +71,25 @@ def gather_data():
         print ("IT DID NOT RECEIVE A PAYLOAD")
     
     # [WRITING TO FILE]
-    with open('raceData.csv', 'a') as csvFile:
+    with open('raceData2.csv', 'a') as csvFile:
         writer = csv.writer(csvFile)
         writer.writerows(csv_data)
     csvFile.close()
 
+def iteration():
+    for i in range(2008,2007,-1):
+        gather_data(i)
+
+def data_normalization():
+    
 if __name__ == "__main__":
-    gather_data()
-	
+	#iteration()
+
+
+
+
+
+
+
+
 
